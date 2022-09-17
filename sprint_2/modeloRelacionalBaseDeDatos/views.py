@@ -61,6 +61,21 @@ class EmpresasView(View):
             
             return JsonResponse(mensaje)
         
+
+          #FUNCION PARA AGREGAR EMPLEADOS
+
+    def post (self,request):
+        data=json.loads(request.body)
+        print(data)
+        roles=Rol.objects.get(id_rol=data["rol"])
+        empre=Empresas.objects.get(id_empresas=data["empresas_id"])
+        emple=Empleado.objects.create(id_empleado=data["id_empleado"],empresas_id=empre, rol=roles,nombre=data['nombre'],apellido=data['apellido'],email=data['email'],telefono=data['telefono'],fecha_creacion=data['fecha_creacion'])
+        emple.save()
+        mensaje={"Mensaje":"Empleado registrado exitosamente"}
+
+        return JsonResponse(mensaje)
+    
+        
     def put(self,request,id_empleado):
             data=json.loads(request.body)
             empleado=list(Empleado.objects.filter(Id_empleado=id_empleado).values())
